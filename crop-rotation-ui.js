@@ -16,6 +16,7 @@ var CropRotationUi = function (divSelector, options) {
       'rgb(164, 46, 46)']
     , MAX_DROPS_PER_PRECROP = 3
     , MAX_DRAGS_PER_PRECROP = 3
+    , MAX_CROPS_PER_YEAR = 3
     , noYears = MAX_ROTATION_LENGTH
     , well = $('<div id="well"></div>').appendTo(rotationUi)
     , main = $('<div id="main"></div>').appendTo(rotationUi)
@@ -287,7 +288,7 @@ var CropRotationUi = function (divSelector, options) {
       return false;
 
     // max 3 items per container
-    if (containerIndex > 0 && container.children('.item').length === 3)
+    if (containerIndex > 0 && container.children('.item').length >= MAX_CROPS_PER_YEAR)
       return false
 
     // if last crop (clone) has drops rotation length is locked
@@ -997,6 +998,9 @@ var CropRotationUi = function (divSelector, options) {
 
       var drop = to.find('.item-drop.ui-droppable');
       var drag = from.find('.item-drag.ui-draggable.ui-draggable-handle');
+
+      if (!connectionAllowed(drag, drop))
+        return;
       
       if (from.data('data').drags.length > 0) {
 
