@@ -23,6 +23,8 @@ var CropRotationUi = function (divSelector, options) {
     , edit = $('<div id="edit"><span id="crop-name" style="margin: 5px;"></span></div>').appendTo(rotationUi)
     ;
 
+  rotationUi.addClass('crop-rotation');
+
   for (var c = 0, cs = crops.length; c < cs; c++) {
     var crop = crops[c];
     var color = colors[c];

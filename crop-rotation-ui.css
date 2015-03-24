@@ -1,4 +1,4 @@
-#crop-rotation > #well {
+.crop-rotation > #well {
   background-color: #333;
   color: white;
   border: 2px solid;
@@ -11,7 +11,7 @@
   height: 400px;
 }
 
-#crop-rotation > #main {
+.crop-rotation > #main {
   position: relative;
   overflow: hidden;
   height: 400px;
@@ -21,7 +21,7 @@
   border-color: #444;
 }
 
-#crop-rotation > #edit {
+.crop-rotation > #edit {
   height: 200px;
   width: 100%px;
   background-color: #333;
@@ -33,25 +33,25 @@
   /*border-top-width: 0px;*/
 }
 
-#crop-rotation svg {
+.crop-rotation svg {
   position: absolute;
   top: 0; 
   left: 0;
   z-index: -1;
 }
 
-#crop-rotation #crop .parameter {
+.crop-rotation #crop .parameter {
   float: left;
 }
 
-#crop-rotation #crop .parameter > label {
+.crop-rotation #crop .parameter > label {
   min-width: 120px;
   max-width: 120px;
   display: block;
   /*margin-left: 10px;*/
 }
 
-#crop-rotation .item {
+.crop-rotation .item {
   width: 80px;
   height: 90px;
   position: absolute;
@@ -63,11 +63,11 @@
   background-color: rgb(34, 34, 34);
 }
 
-#crop-rotation .item-body.active {
+.crop-rotation .item-body.active {
   background-color: #555;
 }
 
-#crop-rotation .item-header {
+.crop-rotation .item-header {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   height: 20px;
@@ -75,7 +75,7 @@
   background-color: grey;
 }
 
-#crop-rotation .item-body {
+.crop-rotation .item-body {
   border: 0px solid;
   height: 70px;
   position: relative;
@@ -84,7 +84,7 @@
   border-bottom-right-radius: 5px;     
 }
 
-#crop-rotation .item-body-left {
+.crop-rotation .item-body-left {
 /*  border-top-width: 1px;
   border-top-style: solid;*/
   width: 30px;
@@ -92,7 +92,7 @@
   float: left; 
 }
 
-#crop-rotation .item-body-right {
+.crop-rotation .item-body-right {
 /*  border-left-width: 1px;
   border-left-style: solid;
   border-top-width: 1px;
@@ -102,7 +102,7 @@
   position: relative;
 }
 
-#crop-rotation .item-drop {
+.crop-rotation .item-drop {
   width: 10px !important;
   height: 10px !important;
   position: absolute;
@@ -112,7 +112,7 @@
   background-color: rgb(153, 153, 153);
 }
 
-#crop-rotation .item-drag {
+.crop-rotation .item-drag {
   width: 10px !important;
   height: 10px !important;
   position: absolute;
@@ -123,7 +123,7 @@
   background-color: rgb(153, 153, 153);
 }
 
-#crop-rotation .item-header > span.ui-icon {
+.crop-rotation .item-header > span.ui-icon {
   position: absolute;
   top: -2px;
   left: calc(100% - 14px);
@@ -132,31 +132,31 @@
   cursor: pointer;
 }
 
-#crop-rotation .well-item > .item-header > span.ui-icon {
+.crop-rotation .well-item > .item-header > span.ui-icon {
   display: none !important;
 }
 
-#crop-rotation span.item-label {
+.crop-rotation span.item-label {
   margin-top: 10px;
   margin-left: 2px;
   color: rgb(34, 34, 34);
 }
 
-#crop-rotation span.item-drag-area {
+.crop-rotation span.item-drag-area {
   position: absolute;
   top: calc(50% - 5px);
   margin-left: 2px;
   display: none;
 }
 
-#crop-rotation span.item-drop-area {
+.crop-rotation span.item-drop-area {
   position: absolute;
   top: calc(50% - 5px);
   margin-top: -10px;
   display: none;
 }
 
-#crop-rotation .well-item {
+.crop-rotation .well-item {
   float: left;
   cursor: move;
   z-index: 100;
@@ -166,14 +166,14 @@
   margin-top: 5px;
 }
 
-#crop-rotation .well-item > .item-header {
+.crop-rotation .well-item > .item-header {
   width: 100%;
   height: 100%;
   border-radius: 5px;
   text-align: center;
 }
 
-#crop-rotation .container {
+.crop-rotation .container {
 /*  width: 100px;
   height: 300px;*/
   background-color: transparent;
@@ -183,6 +183,6 @@
   border-color: black;
 }
 
-#crop-rotation .item-ha {
+.crop-rotation .item-ha {
   color: red;
 }
