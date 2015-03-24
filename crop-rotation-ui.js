@@ -817,8 +817,8 @@ var CropRotationUi = function (divSelector, options) {
       }, // over
       out: function (event, ui) {
 
-        $(this).css('background-color', 'white');
-        ui.draggable.css('background-color', 'white');
+        $(this).css('background-color', 'rgb(153, 153, 153)');
+        ui.draggable.css('background-color', 'rgb(153, 153, 153)');
         previewConnection.style.stroke = '#aaa';
 
       }, // out
@@ -827,8 +827,8 @@ var CropRotationUi = function (divSelector, options) {
         var drag = ui.draggable;
         var drop = $(this);
 
-        drag.css('background-color', 'white');
-        drop.css('background-color', 'white');
+        drag.css('background-color', 'rgb(153, 153, 153)');
+        drop.css('background-color', 'rgb(153, 153, 153)');
         previewConnection.style.stroke = '#aaa';
         previewConnection.style.opacity = 0;
         
