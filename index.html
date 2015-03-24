@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>crop rotation ui</title>
+<meta content=''>
+<link rel='stylesheet' href='http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css'>
+<link rel='stylesheet' href='crop-rotation-ui.css' type='text/css'>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script src='crop-rotation-ui.js'></script>
+<script type='text/javascript'>
+
+$(function () {
+  cropRotationUi = new CropRotationUi('#crop-rotation', {
+    crops: [{
+      name: 'wheat',
+      parameter: []
+    }, {
+      name: 'grass',
+      parameter: []
+    }, {
+      name: 'maize',
+      parameter: []
+    },{
+      name: 'barley',
+      parameter: []
+    }, {
+      name: 'oats',
+      parameter: []
+    }, {
+      name: 'soy',
+      parameter: []
+    },{
+      name: 'beet',
+      parameter: []
+    }, {
+      name: 'pea',
+      parameter: []
+    }],
+    maxRotationLength: 5
+  });
+
+  cropRotationUi.setRotation([
+    [
+      {
+        "crop": {
+          "name": "wheat"
+        },
+        "id": 1427186614808,
+        "to": [
+          1427186618105,
+          1427186685248
+        ]
+      }
+    ],
+    [
+      {
+        "crop": {
+          "name": "barley"
+        },
+        "id": 1427186618105,
+        "to": [
+          1427186641299,
+          1427186688496
+        ]
+      },
+      {
+        "crop": {
+          "name": "soy"
+        },
+        "id": 1427186685248,
+        "to": [
+          1427186688496,
+          1427186833246
+        ]
+      }
+    ],
+    [
+      {
+        "crop": {
+          "name": "grass"
+        },
+        "id": 1427186641299,
+        "to": [
+          1427186660271
+        ]
+      },
+      {
+        "crop": {
+          "name": "maize"
+        },
+        "id": 1427186688496,
+        "to": [
+          1427186728919
+        ]
+      },
+      {
+        "crop": {
+          "name": "wheat"
+        },
+        "id": 1427186833246,
+        "to": [
+          1427186728919
+        ]
+      }
+    ],
+    [
+      {
+        "crop": {
+          "name": "grass"
+        },
+        "id": 1427186660271,
+        "to": [
+          1427186662489
+        ]
+      },
+      {
+        "crop": {
+          "name": "barley"
+        },
+        "id": 1427186728919,
+        "to": [
+          1427186662489
+        ]
+      }
+    ],
+    [
+      {
+        "crop": {
+          "name": "grass"
+        },
+        "id": 1427186662489,
+        "to": [
+          1427186614808
+        ]
+      }
+    ]
+  ]);
+
+});
+
+</script>
+<style>
+
+body {
+  background-color: #333;
+  font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+</style>
+</head>
+  <body>
+    <div id='crop-rotation' style='width:1000px;'></div>
+  </body>
+</html>
