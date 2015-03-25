@@ -267,7 +267,7 @@ var CropRotationUi = function (divSelector, options) {
     $('line', svg).each(function () { this.style.stroke = 'rgb(153, 153, 153)'; });
 
     // find last container that is empty, contains no items
-    var container = $('.container');
+    var container = $('.container', main);
     noYears = container.length - 1;
     for (var i = container.length - 2; i >= 0; i--) {
       if ($(container[i]).find('.item').length === 0)
@@ -284,7 +284,7 @@ var CropRotationUi = function (divSelector, options) {
 
   var itemDropAllowed = function (container) {
 
-    var containerIndex = $('.container').index(container);
+    var containerIndex = $('.container', main).index(container);
 
     // only one item in first year allowed
     if (containerIndex === 0 && container.children('.item').length >= MAX_CROPS_1ST_YEAR)
@@ -295,7 +295,7 @@ var CropRotationUi = function (divSelector, options) {
       return false
 
     // if last crop (clone) has drops rotation length is locked
-    var lastItem = $('.container:last()').find('.item');
+    var lastItem = $('.container:last()', main).find('.item');
     if (containerIndex > 0 && lastItem.length > 0 && lastItem.data('data').drops.length > 0 && containerIndex + 1 > noYears)
       return false;
 
@@ -324,13 +324,13 @@ var CropRotationUi = function (divSelector, options) {
     if (dropData.containerIndex - 1 !== dragData.containerIndex) {
 
       // .. but allow if it is the last crop in a rotation
-      if (dropData.containerIndex === $('.container').length - 1)  { // is clone of first
+      if (dropData.containerIndex === $('.container', main).length - 1)  { // is clone of first
         var index = dragData.containerIndex;
         var isLastCrop = true;
-        while (index < $('.container').length - 2) {
+        while (index < $('.container', main).length - 2) {
 
           index++;
-          if ($($('.container')[index]).children('.item').length !== 0) {
+          if ($($('.container', main)[index]).children('.item').length !== 0) {
             isLastCrop = false;
             break;
           }
@@ -482,26 +482,26 @@ var CropRotationUi = function (divSelector, options) {
           /* both need to know about each other */
           $(this).data('data').clone = clone;
           // add clone to last container
-          $('.container.no-drop').append(clone);
+          $('.container.no-drop', main).append(clone);
           clone.data('data', {
             crop: { name: item.data('crop') },
-            containerIndex: $('.container').length - 1,
+            containerIndex: $('.container', main).length - 1,
             drags: [],
             drops: [],
             clone: $(this),
             area: 0,
             id: item.data('data').id
           });
-          makeDragableItem(clone, $('.container').length - 1, $(this).position);
+          makeDragableItem(clone, $('.container', main).length - 1, $(this).position);
           addPrecrop($(this));
 
           // initial area
-          var noCropsInFirstYear = $('.container').first().find('.item').length;
+          var noCropsInFirstYear = $('.container', main).first().find('.item').length;
           var area = 1 / (noYears * noCropsInFirstYear);
 
-          $('.container', '#main').first().find('.item').each(function () { $(this).data('data').area = area; });
-          $('.container', '#main').first().find('.item-drop-area').html(area.toFixed(2));
-          $('.container', '#main').first().find('.item').each(function () { updateArea($(this)); });
+          $('.container', main).first().find('.item').each(function () { $(this).data('data').area = area; });
+          $('.container', main).first().find('.item-drop-area').html(area.toFixed(2));
+          $('.container', main).first().find('.item').each(function () { updateArea($(this)); });
 
         } else {
           addPrecrop($(this));
@@ -894,12 +894,12 @@ var CropRotationUi = function (divSelector, options) {
   }; // addPrecrop
 
   // item well
-  $('.well-item').draggable({
+  $('.well-item', well).draggable({
     helper: 'clone'
   });
 
   // container 
-  $('.container:not(.no-drop)').droppable({
+  $('.container:not(.no-drop)', main).droppable({
     tolerance: 'fit',
     accept: '.well-item',
     create: function (event, ui) {
@@ -916,7 +916,7 @@ var CropRotationUi = function (divSelector, options) {
       if (!itemDropAllowed($(this)))
         return false;
 
-      var containerIndex = $('.container').index($(this));
+      var containerIndex = $('.container', main).index($(this));
       
 
       var item = $(ui.draggable).clone();
@@ -1022,7 +1022,7 @@ var CropRotationUi = function (divSelector, options) {
           pre.find('.item-drag-area').html((1 / (noDrags + 1)).toFixed(2));
 
           drag.parents('.item-body').find('.item-body-right').css('height', pre.height() / (noDrags + 1));
-          drag.parent().css('height', (pre.height() - $('.item-body-right').css('border-top-width') * 2 * (noDrags + 1)) / (noDrags + 1));
+          drag.parent().css('height', (pre.height() - $('.item-body-right', from).css('border-top-width') * 2 * (noDrags + 1)) / (noDrags + 1));
           makeDragableConnector($(pre.find('.item-drag').last()), drop);
 
           // update clone if there is any
