@@ -5,6 +5,11 @@ var CropRotationUi = function (divSelector, options) {
     , crops = options.crops
     , rotationUi = $(divSelector)
     , MAX_ROTATION_LENGTH = options.maxRotationLength || 5
+    , MAX_DROPS_PER_CROP = 3
+    , MAX_DRAGS_PER_CROP = 3
+    , MAX_CROPS_PER_YEAR = 3
+    , MAX_CROPS_1ST_YEAR = 1
+    , noYears = 1
     , colors = options.colors || 
       ['rgb(33, 113, 181)',
       'rgb(35, 139, 69)',
@@ -14,10 +19,6 @@ var CropRotationUi = function (divSelector, options) {
       'rgb(106, 81, 163)',
       'rgb(206, 18, 86)',
       'rgb(164, 46, 46)']
-    , MAX_DROPS_PER_PRECROP = 3
-    , MAX_DRAGS_PER_PRECROP = 3
-    , MAX_CROPS_PER_YEAR = 3
-    , noYears = MAX_ROTATION_LENGTH
     , well = $('<div id="well"></div>').appendTo(rotationUi)
     , main = $('<div id="main"></div>').appendTo(rotationUi)
     , edit = $('<div id="edit"><span id="crop-name" style="margin: 5px;"></span></div>').appendTo(rotationUi)
@@ -286,7 +287,7 @@ var CropRotationUi = function (divSelector, options) {
     var containerIndex = $('.container').index(container);
 
     // only one item in first year allowed
-    if (containerIndex === 0 && container.children('.item').length === 1)
+    if (containerIndex === 0 && container.children('.item').length >= MAX_CROPS_1ST_YEAR)
       return false;
 
     // max 3 items per container
@@ -308,7 +309,7 @@ var CropRotationUi = function (divSelector, options) {
     var dropData = drop.parents('.item').data('data');
 
     // check if max. no. of precrops has been reached
-    if (dropData.drops.length === MAX_DROPS_PER_PRECROP) {
+    if (dropData.drops.length === MAX_DROPS_PER_CROP) {
       if (DEBUG) console.log('max. no. of precrops has been reached');
       return false;
     }
@@ -727,7 +728,7 @@ var CropRotationUi = function (divSelector, options) {
         var item = $(this).parents('.item');
 
         // check if max. no. of precrops has been reached
-        if (item.data('data').drags.length === MAX_DRAGS_PER_PRECROP) {
+        if (item.data('data').drags.length === MAX_DRAGS_PER_CROP) {
           if (DEBUG) console.log('max. no. of drags has been reached');
           return false;
         }
@@ -842,7 +843,7 @@ var CropRotationUi = function (divSelector, options) {
           var pre = drag.parents('.item-body');
           var noDrags = drag.parents('.item').data('data').drags.length;
 
-          if (pre.find('.item-body-right').length < MAX_DRAGS_PER_PRECROP) {
+          if (pre.find('.item-body-right').length < MAX_DRAGS_PER_CROP) {
             
             pre.append(
               "<div class='item-body-right'>\
@@ -1009,7 +1010,7 @@ var CropRotationUi = function (divSelector, options) {
         var pre = drag.parents('.item-body');
         var noDrags = drag.parents('.item').data('data').drags.length;
 
-        if (pre.find('.item-body-right').length < MAX_DRAGS_PER_PRECROP) {
+        if (pre.find('.item-body-right').length < MAX_DRAGS_PER_CROP) {
           
           pre.append(
             "<div class='item-body-right'>\
