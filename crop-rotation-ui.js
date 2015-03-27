@@ -48,15 +48,6 @@ var CropRotationUi = function (divSelector, options) {
   svg.setAttributeNS(null, 'fill', '#333');
   main.append(svg);
 
-  var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-  rect.setAttributeNS(null, 'x', 0);
-  rect.setAttributeNS(null, 'y', 0);
-  rect.setAttributeNS(null, 'width', '100%');
-  rect.setAttributeNS(null, 'height', '100%');
-  rect.setAttributeNS(null, 'stroke-width', 0);
-  rect.setAttributeNS(null, 'fill', '#333');
-  svg.appendChild(rect);
-
   for (var y = 0; y < MAX_ROTATION_LENGTH; y++) {
     var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
     line.setAttributeNS(null, 'x1', (y + 1) * widthMain / (MAX_ROTATION_LENGTH + 1));
@@ -518,13 +509,18 @@ var CropRotationUi = function (divSelector, options) {
         if (clone) {
           clone.css({ 'top': ui.position.top, 'left': ui.position.left });
           connections.update(clone);
-
         }
 
+      },
+      start: function (event, ui) {
+        console.log($(this).css('z-index'));
+        $(this).css('z-index', parseInt($(this).css('z-index')) + 1);
+      },
+      stop: function (event, ui) {
+        $(this).css('z-index', parseInt($(this).css('z-index')) - 1);
       }
     });
 
-      
     // close button TODO: hide close button in clone
     item.find('.item-header > .ui-icon-close').on('click', function () {
 
@@ -635,7 +631,6 @@ var CropRotationUi = function (divSelector, options) {
 
           }
 
-
         }
 
         item.data('data').clone.remove();
@@ -667,11 +662,10 @@ var CropRotationUi = function (divSelector, options) {
 
     drag.draggable({
       helper: 'clone',
-      zIndex: 1000,
-      appendTo: rotationUi,
+      zIndex: 2,
+      appendTo: main,
       create: function () {
 
-        
         $(this).on('click', function () {
 
           // remove a connection
@@ -739,7 +733,18 @@ var CropRotationUi = function (divSelector, options) {
           return false;        
         }
 
+        // move active connection above items TODO: move previewConnection to seperate svg
+        $(svg).css('z-index', 3);
+
       }, // start
+      stop: function (event, ui) {
+
+        previewConnection.style.stroke = '#aaa';
+        previewConnection.style.opacity = 0;
+        // move active connection below items
+        $(svg).css('z-index', 1);
+
+      }, // stop
       drag: function (event, ui) {
 
         previewConnection.style.opacity = 1;
@@ -765,13 +770,7 @@ var CropRotationUi = function (divSelector, options) {
         previewConnection.pathSegList[1].y1 = ptFrom.y;
         previewConnection.pathSegList[1].y2 = ptTo.y;
 
-      }, // drag
-      stop: function (event, ui) {
-
-        previewConnection.style.stroke = '#aaa';
-        previewConnection.style.opacity = 0;
-
-      } // stop
+      } // drag
     }); // draggable
 
   }; // makeDragableConnector
@@ -873,9 +872,7 @@ var CropRotationUi = function (divSelector, options) {
 
         } else {
 
-
           var path = makeConnection(drag, drop);
-
 
           // update clone if there is any
           var clone = drop.parents('.item').data('clone');
@@ -886,16 +883,15 @@ var CropRotationUi = function (divSelector, options) {
 
             }
           }
-
         }
-
       } // drop
     }); // droppable
   }; // addPrecrop
 
   // item well
   $('.well-item', well).draggable({
-    helper: 'clone'
+    helper: 'clone',
+    appendTo: main
   });
 
   // container 
