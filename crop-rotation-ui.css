@@ -50,6 +50,24 @@
   pointer-events: none;
 }
 
+.crop-rotation svg .connector {
+  stroke: #aaa;
+  stroke-width: 1px;
+  fill: transparent;
+}
+
+.crop-rotation svg #preview-connection {
+  stroke: #aaa;
+  stroke-width: 2px;
+  fill: transparent;
+}
+
+.crop-rotation svg .line-light {
+  stroke: #ccc;
+  stroke-width: 1px;
+  fill: transparent;
+}
+
 .crop-rotation #crop .parameter {
   float: left;
 }
@@ -222,15 +240,23 @@
   color: red;
 }
 
-.crop-rotation .item.no-precrop .item-drop, .item.no-successor .item-drag {
+.crop-rotation .item.no-precrop .item-drop, .crop-rotation .item.no-successor .item-drag {
   background-color: red;
 }
 
-.crop-rotation .item-drop.over-allowed, .item-drag.over-allowed {
+.crop-rotation .item .item-drop.over-allowed {
   background-color: green;
 }
 
-.crop-rotation .item-drop.over-not-allowed, .item-drag.over-not-allowed  {
+.crop-rotation .item .item-drag.over-allowed {
+  background-color: green;
+}
+
+.crop-rotation .item-drop.over-not-allowed  {
+  background-color: red;
+}
+
+.crop-rotation .item-drag.over-not-allowed  {
   background-color: red;
 }
 
@@ -242,4 +268,12 @@
     transparent 5px,
     transparent 10px
   );
+}
+
+.crop-rotation svg #preview-connection.over-allowed {
+  stroke: green;
+}
+
+.crop-rotation svg #preview-connection.over-not-allowed {
+  stroke: red;
 }

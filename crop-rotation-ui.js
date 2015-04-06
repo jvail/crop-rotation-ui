@@ -24,52 +24,53 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     , well = $('<div id="well"></div>').appendTo(rotationUi)
     , main = $('<div id="main"></div>').appendTo(rotationUi)
     , edit = $('<div id="edit"></div>').appendTo(rotationUi)
+    , widthMain = 0
+    , heightMain = 0
+    , svg = null
+    , previewConnection = null
     ;
 
   rotationUi.addClass('crop-rotation');
 
+  var wellCrop, cropColor;
   for (var c = 0, cs = cropsWell.length; c < cs; c++) {
-    var crop = cropsWell[c];
-    var color = colors[c];
-    $("<div class='well-item' data-crop='"+crop.name+"'>\
+    var wellCrop = cropsWell[c];
+    var cropColor = colors[c];
+    $("<div class='well-item' data-crop='"+wellCrop.name+"'>\
         <div class='item-header'>\
-          <span class='item-label'>"+crop.name+"</span>\
+          <span class='item-label'>"+wellCrop.name+"</span>\
           <span class='ui-icon ui-icon-close'></span>\
         </div>\
       </div>"
-    ).appendTo(well).find('.item-header').css('background-color', color + ' !important');
+    ).appendTo(well).find('.item-header').css('background-color', cropColor + ' !important');
   }
 
-  var widthMain = parseInt(main.css('width'));
-  var heightMain = parseInt(main.css('height'));
+  widthMain = parseInt(main.css('width'));
+  heightMain = parseInt(main.css('height'));
 
-  var svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+  svg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
   svg.setAttributeNS(null, 'width', '100%');
   svg.setAttributeNS(null, 'height', '100%');
   svg.setAttributeNS(null, 'stroke-width', 0);
   svg.setAttributeNS(null, 'fill', '#333');
   main.append(svg);
 
+  var line;
   for (var y = 0; y < MAX_ROTATION_LENGTH; y++) {
-    var line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+    line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+    line.setAttributeNS(null, 'class', 'line-light');
     line.setAttributeNS(null, 'x1', (y + 1) * (widthMain - 2) / (MAX_ROTATION_LENGTH + 1));
     line.setAttributeNS(null, 'x2', (y + 1) * (widthMain - 2) / (MAX_ROTATION_LENGTH + 1));
     line.setAttributeNS(null, 'y1', 0);
     line.setAttributeNS(null, 'y2', heightMain);
     line.setAttributeNS(null, 'stroke-dasharray', '3,3');
-    line.style.stroke = "#ccc"; //Set stroke colour
-    line.style.strokeWidth = "1"; //Set stroke width
-    line.style.fill = "rgba(0, 0, 0, 0)"; //Set stroke width
     svg.appendChild(line);
   }
 
-  var previewConnection = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+  previewConnection = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+  previewConnection.setAttributeNS(null, 'class', 'preview');
   previewConnection.setAttributeNS(null, 'id', 'preview-connection');
   previewConnection.setAttributeNS(null, 'stroke-dasharray', '3,3');
-  previewConnection.style.stroke = "#aaa"; //Set stroke colour
-  previewConnection.style.strokeWidth = "1.5"; //Set stroke width
-  previewConnection.style.fill = "rgba(0, 0, 0, 0)"; //Set stroke width
-  previewConnection.style.opacity = 0; //Set stroke width
   previewConnection.setAttributeNS(null, "d",'M 0 0 C 0 0 0 0 0 0');
   svg.appendChild(previewConnection);
 
@@ -92,13 +93,14 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       return;
     
     $('.crop-container', main).css({
-      width: Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)) + 'px',
-      height: heightMain + 'px'
+      width: Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)),
+      height: heightMain
     });
 
     $('line', svg).each(function (index) {
-      $(this)[0].setAttributeNS(null, 'x1', (index + 1) * Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)));
-      $(this)[0].setAttributeNS(null, 'x2', (index + 1) * Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)));
+      var line = $(this)[0];
+      line.setAttributeNS(null, 'x1', (index + 1) * Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)));
+      line.setAttributeNS(null, 'x2', (index + 1) * Math.floor((widthMain - 2) / (MAX_ROTATION_LENGTH + 1)));
     });
 
     $('.item', main).each(function (index) {
@@ -117,16 +119,13 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
   var connections = (function (svg) {
 
-    var store = [], svg = svg;
+    var store = [];
 
     var add = function (connection) {
 
       var path = document.createElementNS("http://www.w3.org/2000/svg", 'path'); //Create a path in SVG's namespace
       path.setAttributeNS(null, 'class', 'connector');
-      path.style.stroke = "#aaa"; //Set stroke colour
-      path.style.strokeWidth = "1px"; //Set stroke width
-      path.style.fill = "transparent"; //Set stroke width
-      path.setAttributeNS(null, "d",'M0 0 C 0 0 0 0 0 0'); //Set path's data
+      path.setAttributeNS(null, "d",'M0 0 C 0 0 0 0 0 0');
       svg.appendChild(path);
       connection.path = path;
       store.push(connection);
@@ -273,7 +272,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     if (DEBUG)
       console.log('updateRotationLength to: ' + noYears);
 
-  }
+  };
 
   var itemDropAllowed = function (container, wellItem) {
 
@@ -480,8 +479,10 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
   var hasPerennialPreCrop = function (item) {
 
-    if (item.data('data').crop.isPerennial
-      && item.data('data').drops.filter(function (a) { return (a.from.item.data('data').crop.name === item.data('data').crop.name) }).length > 0)
+    var itemData = item.data('data');
+    
+    if (itemData.crop.isPerennial
+      && itemData.drops.filter(function (a) { return (a.from.item.data('data').crop.name === itemData.crop.name) }).length > 0)
       return true;
 
     return false;
@@ -490,8 +491,10 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
   var hasPerennialSuccessiveCrop = function (item) {
 
-    if (item.data('data').crop.isPerennial
-      && item.data('data').drags.filter(function (a) { return (a.to.item.data('data').crop.name === item.data('data').crop.name) }).length > 0)
+    var itemData = item.data('data');
+
+    if (itemData.crop.isPerennial
+      && itemData.drags.filter(function (a) { return (a.to.item.data('data').crop.name === itemData.crop.name) }).length > 0)
       return true;
 
     return false;
@@ -816,19 +819,18 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
         // move active connection above items TODO: move previewConnection to seperate svg
         $(svg).css('z-index', 3);
+        previewConnection.style.opacity = 1;
 
       }, // start
       stop: function (event, ui) {
 
-        previewConnection.style.stroke = '#aaa';
         previewConnection.style.opacity = 0;
+        previewConnection.setAttributeNS(null, 'class', 'preview');
         // move active connection below items
         $(svg).css('z-index', 1);
 
       }, // stop
       drag: function (event, ui) {
-
-        previewConnection.style.opacity = 1;
 
         var offsetFrom = $(this).offset();
         var offsetTo = ui.offset;
@@ -883,30 +885,27 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
         if (connectionAllowed(ui.draggable, $(this))) {
 
-          // $(this).css('background-color', 'green');
-          // ui.draggable.css('background-color', 'green');
-          $(this).switchClass('over-not-allowed', 'over-allowed');
-          ui.draggable.switchClass('over-not-allowed', 'over-allowed');
-          previewConnection.style.stroke = 'green';
+          $(this).addClass('over-allowed');
+          $(this).removeClass('over-not-allowed');
+          ui.draggable.addClass('over-allowed');
+          ui.draggable.removeClass('over-not-allowed');
+          previewConnection.setAttributeNS(null, 'class', 'over-allowed');
 
         } else {
           
-          // $(this).css('background-color', 'red');
-          // ui.draggable.css('background-color', 'red');
-          $(this).switchClass('over-allowed', 'over-not-allowed');
-          ui.draggable.switchClass('over-allowed', 'over-not-allowed');
-          previewConnection.style.stroke = 'red';
-
+          $(this).addClass('over-not-allowed');
+          $(this).removeClass('over-allowed');
+          ui.draggable.addClass('over-not-allowed');
+          ui.draggable.removeClass('over-allowed');
+          previewConnection.setAttributeNS(null, 'class', 'over-not-allowed');
         }
 
       }, // over
       out: function (event, ui) {
 
-        // $(this).css('background-color', 'rgb(153, 153, 153)');
-        // ui.draggable.css('background-color', 'rgb(153, 153, 153)');
         $(this).removeClass('over-allowed over-not-allowed');
         ui.draggable.removeClass('over-allowed over-not-allowed');
-        previewConnection.style.stroke = '#aaa';
+        previewConnection.setAttributeNS(null, 'class', 'preview');
 
       }, // out
       drop: function (event, ui) {
@@ -914,12 +913,9 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         var drag = ui.draggable;
         var drop = $(this);
 
-        // drag.css('background-color', 'rgb(153, 153, 153)');
-        // drop.css('background-color', 'rgb(153, 153, 153)');
         drop.removeClass('over-allowed over-not-allowed');
         drag.removeClass('over-allowed over-not-allowed');
-        previewConnection.style.stroke = '#aaa';
-        previewConnection.style.opacity = 0;
+        previewConnection.setAttributeNS(null, 'class', 'preview');
         
         if (!connectionAllowed(drag, drop))
           return false;
