@@ -1148,8 +1148,12 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         // extend with parameters
         if (!crop.hasOwnProperty('parameter')) 
           crop.parameter = {};
-        
-        $.extend(crop, JSON.parse(JSON.stringify(cropsWell.filter(function (a) { return a.name === crop.name; })[0])));
+
+          console.log(crop);
+
+        var proto = JSON.parse(JSON.stringify(cropsWell.filter(function (a) { return a.name === crop.name; })[0]));
+
+        crop = $.extend(true /*deep*/, proto, crop); // do not overwrite obj provided in rotation, instead overwrite proto
 
         var item = addCrop(y, crop, crop.id);
         connect.push({
