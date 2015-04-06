@@ -91,6 +91,20 @@
   background-color: transparent;
 }
 
+.crop-rotation .item .item-area {
+  width: 50px;
+  top: calc(50% - 6px);
+  left: 15px;
+  right: 15px;
+  text-align: center;
+  position: absolute;
+  z-index: 1;
+  border: 0px solid;
+  font-size: 100%;
+  color: #333;
+  background-color: transparent;
+}
+
 .crop-rotation .item.locked .item-body {
   cursor:not-allowed;
   background: repeating-linear-gradient(
@@ -201,13 +215,6 @@
   position: absolute;
   top: calc(50% - 5px);
   margin-left: 2px;
-  display: none;
-}
-
-.crop-rotation span.item-drop-area {
-  position: absolute;
-  top: calc(50% - 5px);
-  margin-top: -10px;
   display: none;
 }
 

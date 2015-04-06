@@ -385,10 +385,12 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         return { area: p.area + c.area };
       }, { area: 0 }).area;
       
-      if (area !== dragItem.data('data').clone.data('data').area)
-        dragItem.find('.item-drop-area').css('color', 'red');
+      if (Math.round(area * 100) !== Math.round(dragItem.data('data').clone.data('data').area * 100))
+        dragItem.find('.item-area').css('color', 'red');
       else
-        dragItem.find('.item-drop-area').css('color', 'black');
+        dragItem.find('.item-area').css('color', 'black');
+
+      dragItem.find('.item-area').html(area.toFixed(2));
 
       return;
     }
@@ -404,16 +406,15 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       }, { area: 0 }).area;
 
       if (dragItem.data('data').drops.length === 0 || area === 0) {
-        dragItem.find('.item-drop-area').html(0);
-        dragItem.find('.item-drop-area').css('color', 'red');
+        dragItem.find('.item-area').html(0);
+        dragItem.find('.item-area').css('color', 'red');
       } else {
-        dragItem.find('.item-drop-area').css('color', 'black');
+        dragItem.find('.item-area').css('color', 'black');
       }
 
     }
 
-    dragItem.find('.item-drop-area').html(area.toFixed(2));
-
+    dragItem.find('.item-area').html(area.toFixed(2));
     
     var draggedArea = area / dragItem.data('data').drags.length;
 
@@ -422,17 +423,17 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       var dropItem = dragItem.data('data').drags[i].to.item;
 
       if (dropItem.data('data').drops.length === 0 || area === 0) {
-        dropItem.find('.item-drop-area').html(0);
-        dropItem.find('.item-drop-area').css('color', 'red');
+        dropItem.find('.item-area').html(0);
+        dropItem.find('.item-area').css('color', 'red');
       } else {
-        dropItem.find('.item-drop-area').css('color', 'black');
+        dropItem.find('.item-area').css('color', 'black');
       }
 
       for (var j = 0, js = dropItem.data('data').drops.length; j < js; j++) {
       
         if (dropItem.data('data').drops[j].from.item.is(dragItem)) {
           dropItem.data('data').drops[j].area = draggedArea;
-          dropItem.find('.item-drop-area').html(
+          dropItem.find('.item-area').html(
             dropItem.data('data').drops.reduce(function (p, c) {
               return { area: p.area + c.area };
             }, { area: 0 }).area.toFixed(2)
@@ -538,15 +539,18 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
           // initial area
           var noCropsInFirstYear = $('.crop-container', main).first().find('.item').length;
-          var area = 1 / (noYears * noCropsInFirstYear);
+          var area = 1 / noCropsInFirstYear;
 
           $('.crop-container', main).first().find('.item').each(function () { $(this).data('data').area = area; });
-          $('.crop-container', main).first().find('.item-drop-area').html(area.toFixed(2));
+          $('.crop-container', main).first().find('.item-area').html(area.toFixed(2));
           $('.crop-container', main).first().find('.item').each(function () { updateArea($(this)); });
 
           // hide drag or drop in first (last) crop
-          $(this).find('.item-drop').css('display', 'none');
-          clone.find('.item-body-right').css('display', 'none');
+          $(this).find('.item-drop').css('visibility', 'hidden');
+          clone.find('.item-body-right').css('visibility', 'hidden');
+          var cloneArea = clone.find('.item-area');
+          cloneArea.html('0.00');
+          cloneArea.css('color', 'red');
 
         } else {
           addPrecrop($(this));
@@ -864,12 +868,13 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     item.append(
       "<div class='item-body'>\
         <div class='item-body-left'>\
-          <div class='item-drop'><span class='item-drop-area'>0</span></div>\
+          <div class='item-drop'></div>\
         </div>\
         <div class='item-body-right'>\
           <span class='item-drag-area'>1</span>\
           <div class='item-drag'><span></span></div>\
         </div>\
+        <span class='item-area'></span>\
       </div>");
 
     makeDragableConnector($(item.find('.item-drag').last()));
@@ -1148,8 +1153,6 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         // extend with parameters
         if (!crop.hasOwnProperty('parameter')) 
           crop.parameter = {};
-
-          console.log(crop);
 
         var proto = JSON.parse(JSON.stringify(cropsWell.filter(function (a) { return a.name === crop.name; })[0]));
 
