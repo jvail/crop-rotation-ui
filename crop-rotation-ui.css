@@ -1,36 +1,45 @@
+.crop-rotation * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .crop-rotation > #well {
-  background-color: #333;
-  color: white;
-  border: 2px solid;
-  border-top-left-radius: 6px;  
-  border-color: #444;
-  border-bottom-width: 0px;
-  border-right-width: 0px;
-  float: left;
-  max-width: 200px;
-  height: 400px;
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  padding: 5px;
+  border: 1px solid;
+  border-color: #ccc;
+  border-top-right-radius: 5px; 
+  border-top-left-radius: 5px; 
+  background-color: rgb(245, 245, 245);
 }
 
 .crop-rotation > #main {
+  width: 100%;
+  height: 300px;
+  padding: 0px;
+  border: 1px solid;
+  border-top-width: 0px;
+  border-color: #ccc;
+  background-color: rgb(245, 245, 245);
   position: relative;
   overflow: hidden;
-  height: 400px;
-  border: 2px solid;
-  border-top-right-radius: 6px;  
-  border-bottom-width: 0px;
-  border-color: #444;
+  white-space: nowrap;
 }
 
 .crop-rotation > #edit {
-  height: 200px;
-  width: 100%px;
-  background-color: #333;
-  color: white;
-  border: 2px solid;
-  border-bottom-right-radius: 6px;  
-  border-bottom-left-radius: 6px;  
-  border-color: #444;
-  /*border-top-width: 0px;*/
+  width: 100%;
+  min-height: 200px;
+  padding: 5px;
+  border: 1px solid;
+  border-top-width: 0px;
+  border-bottom-left-radius: 5px; 
+  border-bottom-right-radius: 5px;
+  color: #333;
+  border-color: #ccc;
+  background-color: rgb(245, 245, 245);
 }
 
 .crop-rotation svg {
@@ -60,29 +69,54 @@
   border: 0px solid;
   border-radius: 5px;
   font-size: 80%;
-  color: rgb(153, 153, 153);
-  background-color: rgb(34, 34, 34);
+  color: #333;;
+  background-color: transparent;
 }
 
-.crop-rotation .item-body.active {
-  background-color: #555;
+.crop-rotation .item.locked .item-body {
+  cursor:not-allowed;
+  background: repeating-linear-gradient(
+    45deg,
+    #eee,
+    #eee 5px,
+    #ccc 5px,
+    #ccc 10px
+  );
+}
+
+.crop-rotation .item.is-clone .item-body {
+  cursor:not-allowed;
+  background: repeating-linear-gradient(
+    45deg,
+    #eee,
+    #eee 5px,
+    #ccc 5px,
+    #ccc 10px
+  );
+}
+
+.crop-rotation .item.active .item-body {
+  background-color: #ccc;
+  border-color: #aaa;
 }
 
 .crop-rotation .item-header {
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   height: 20px;
   cursor: move;
   background-color: grey;
 }
 
 .crop-rotation .item-body {
-  border: 0px solid;
   height: 70px;
   position: relative;
-  cursor: pointer;
+  border: 1px solid;
   border-bottom-left-radius: 5px;     
   border-bottom-right-radius: 5px;     
+  border-color: #ccc;
+  background-color: #eee;
+  cursor: pointer;
 }
 
 .crop-rotation .item-body-left {
@@ -138,9 +172,11 @@
 }
 
 .crop-rotation span.item-label {
-  margin-top: 10px;
-  margin-left: 2px;
-  color: rgb(34, 34, 34);
+  color: black;
+  word-wrap: break-word;
+  white-space: normal;
+  width: 100%;
+  margin: 2px;
 }
 
 .crop-rotation span.item-drag-area {
@@ -163,8 +199,7 @@
   z-index: 3;
   width: 60px;
   height: 60px;
-  margin-left: 5px;
-  margin-top: 5px;
+  margin: 3px;
 }
 
 .crop-rotation .well-item > .item-header {
@@ -174,16 +209,37 @@
   text-align: center;
 }
 
-.crop-rotation .container {
-/*  width: 100px;
-  height: 300px;*/
+.crop-rotation .crop-container {
   background-color: transparent;
   position: relative;
   float: left;
-  border: 0px solid;
-  border-color: black;
+  border: 0px;
+  display:inline;
+  padding: 2px;
 }
 
 .crop-rotation .item-ha {
   color: red;
+}
+
+.crop-rotation .item.no-precrop .item-drop, .item.no-successor .item-drag {
+  background-color: red;
+}
+
+.crop-rotation .item-drop.over-allowed, .item-drag.over-allowed {
+  background-color: green;
+}
+
+.crop-rotation .item-drop.over-not-allowed, .item-drag.over-not-allowed  {
+  background-color: red;
+}
+
+.well-item.well-item-helper.not-droppable .item-header {
+  background: repeating-linear-gradient(
+    45deg,
+    #eee,
+    #eee 5px,
+    transparent 5px,
+    transparent 10px
+  );
 }

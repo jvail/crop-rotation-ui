@@ -11,33 +11,105 @@
 <script type='text/javascript'>
 
 $(function () {
-  cropRotationUi = new CropRotationUi('#crop-rotation', {
+
+var cropRotationUi = new CropRotationUi('#crop-rotation', {
     crops: [{
-      name: 'wheat',
-      parameter: []
-    }, {
-      name: 'grass',
-      parameter: []
-    }, {
-      name: 'maize',
-      parameter: []
-    },{
-      name: 'barley',
-      parameter: []
-    }, {
-      name: 'oats',
-      parameter: []
-    }, {
-      name: 'soy',
-      parameter: []
-    },{
-      name: 'beet',
-      parameter: []
-    }, {
-      name: 'pea',
-      parameter: []
-    }],
-    maxRotationLength: 5
+        name: 'wheat',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 1
+          }
+        }
+      }, {
+        name: 'grass',
+        isPerennial: true,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 2
+          }
+        }
+      }, {
+        name: 'maize',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 3
+          }
+        }
+      },{
+        name: 'barley',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 4
+          }
+        }
+      }, {
+        name: 'oats',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 5
+          }
+        }
+      }, {
+        name: 'soy',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 6
+          }
+        }
+      },{
+        name: 'beet',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 7
+          }
+        }
+      }, {
+        name: 'pea',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 8
+          }
+        }
+      }, {
+        name: 'rye',
+        isPerennial: false,
+        parameter: {
+          myparam: {
+            label: 'parameter 1',
+            unit: '%',
+            value: 9
+          }
+        }
+      }],
+      maxRotationLength: 5
+  }, function (crop) {
+
+      $('#edit').empty();
+      $('<pre></pre>').appendTo('#edit').append(JSON.stringify(crop, null, 2));
+
   });
 
   cropRotationUi.setRotation([
@@ -143,13 +215,22 @@ $(function () {
 <style>
 
 body {
-  background-color: #333;
+  background-color: rgb(250, 250, 250);
   font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+#crop-rotation {
+  width: 70%;
+  height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
 }
 
 </style>
 </head>
   <body>
-    <div id='crop-rotation' style='width:1000px;'></div>
+    <div id='crop-rotation'></div>
   </body>
 </html>
