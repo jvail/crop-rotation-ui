@@ -382,39 +382,42 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     if (dragItem.data('data').containerIndex === noYears) {
       // compare start & end area
       area = dragItem.data('data').drops.reduce(function (p, c) {
-        return { area: p.area + c.area };
-      }, { area: 0 }).area;
+        return p + c.area;
+      }, 0);
       
-      if (Math.round(area * 100) !== Math.round(dragItem.data('data').clone.data('data').area * 100))
+      if (Math.round(area * 100) !== Math.round(dragItem.data('data').clone.data('data').crop.area * 100))
         dragItem.find('.item-area').css('color', 'red');
       else
         dragItem.find('.item-area').css('color', 'black');
 
-      dragItem.find('.item-area').html(area.toFixed(2));
+      dragItem.find('.item-area').html(Math.round(area * 100) + '%');
+      dragItem.data('data').crop.area = area;
 
       return;
     }
 
     if (dragItem.data('data').containerIndex === 0) {
 
-      area = dragItem.data('data').area;
+      area = dragItem.data('data').crop.area;
 
     } else {
 
       area = dragItem.data('data').drops.reduce(function (p, c) {
-        return { area: p.area + c.area };
-      }, { area: 0 }).area;
+        return p + c.area;
+      }, 0);
 
       if (dragItem.data('data').drops.length === 0 || area === 0) {
-        dragItem.find('.item-area').html(0);
+        dragItem.find('.item-area').html(0 + '%');
         dragItem.find('.item-area').css('color', 'red');
+        dragItem.data('data').crop.area = 0;
       } else {
         dragItem.find('.item-area').css('color', 'black');
       }
 
     }
 
-    dragItem.find('.item-area').html(area.toFixed(2));
+    dragItem.find('.item-area').html(Math.round(area * 100) + '%');
+    dragItem.data('data').crop.area = area;
     
     var draggedArea = area / dragItem.data('data').drags.length;
 
@@ -423,7 +426,8 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       var dropItem = dragItem.data('data').drags[i].to.item;
 
       if (dropItem.data('data').drops.length === 0 || area === 0) {
-        dropItem.find('.item-area').html(0);
+        dropItem.find('.item-area').html(0  + '%');
+        dropItem.data('data').crop.area = 0;
         dropItem.find('.item-area').css('color', 'red');
       } else {
         dropItem.find('.item-area').css('color', 'black');
@@ -433,11 +437,10 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       
         if (dropItem.data('data').drops[j].from.item.is(dragItem)) {
           dropItem.data('data').drops[j].area = draggedArea;
-          dropItem.find('.item-area').html(
-            dropItem.data('data').drops.reduce(function (p, c) {
-              return { area: p.area + c.area };
-            }, { area: 0 }).area.toFixed(2)
-          );
+          dropItem.data('data').crop.area = dropItem.data('data').drops.reduce(function (p, c) {
+              return p + c.area;
+            }, 0);
+          dropItem.find('.item-area').html(Math.round(dropItem.data('data').crop.area * 100) + '%');
         }
       
       }
@@ -539,10 +542,10 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
           // initial area
           var noCropsInFirstYear = $('.crop-container', main).first().find('.item').length;
-          var area = 1 / noCropsInFirstYear;
+          var area = 1 / (noCropsInFirstYear /** noYears*/);
 
-          $('.crop-container', main).first().find('.item').each(function () { $(this).data('data').area = area; });
-          $('.crop-container', main).first().find('.item-area').html(area.toFixed(2));
+          $('.crop-container', main).first().find('.item').each(function () { $(this).data('data').crop.area = area; });
+          $('.crop-container', main).first().find('.item-area').html(Math.round(area * 100) + '%');
           $('.crop-container', main).first().find('.item').each(function () { updateArea($(this)); });
 
           // hide drag or drop in first (last) crop
@@ -571,7 +574,6 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
       },
       start: function (event, ui) {
-        console.log($(this).css('z-index'));
         $(this).css('z-index', parseInt($(this).css('z-index')) + 1);
       },
       stop: function (event, ui) {
@@ -646,8 +648,6 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
               connectedItem.data('data').drops.splice(j, 1);
               if (connectedItem.data('data').drops.length === 0)
                 connectedItem.addClass('no-precrop');
-              console.log(connectedItem);
-
             }
 
             connectedItems.push(connectedItem);
@@ -719,6 +719,9 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     });
 
     item.children('.item-body').on('click', function () {
+
+      if (DEBUG)
+        console.log($(this).parent('.item').data('data'));
 
       if ($(this).parent('.item').hasClass('locked') || $(this).parent('.item').hasClass('is-clone'))
         return;
