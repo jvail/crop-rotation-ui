@@ -618,7 +618,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
                 // if more than one connection ...
                 if (connectedItem.data('data').drags.length > 0) {
 
-                  connectedItem.find('.item-body-right')[j].remove();
+                  $(connectedItem.find('.item-body-right')[j]).remove();
                   var height = connectedItem.find('.item-body').height();
                   var siblings = connectedItem.find('.item-body-right');
                   siblings.css('height', height / siblings.length);
@@ -684,7 +684,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
                 // if more than one connection ...
                 if (connectedItem.data('data').drags.length > 0) {
 
-                  connectedItem.find('.item-body-right')[j].remove();
+                  $(connectedItem.find('.item-body-right')[j]).remove();
                   var height = connectedItem.find('.item-body').height();
                   var siblings = connectedItem.find('.item-body-right');
                   siblings.css('height', height / siblings.length);
