@@ -55,6 +55,10 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
   svg.setAttributeNS(null, 'fill', '#333');
   main.append(svg);
 
+  var connectorsG = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+  connectorsG.setAttributeNS(null, 'id', 'connectors');
+  svg.appendChild(connectorsG);
+
   var line;
   for (var y = 0; y < MAX_ROTATION_LENGTH; y++) {
     line = document.createElementNS("http://www.w3.org/2000/svg", 'line');
@@ -117,7 +121,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     not allowed: n -> n,m
   */
 
-  var connections = (function (svg) {
+  var connections = (function (svg, connectorsG) {
 
     var store = [];
 
@@ -126,7 +130,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       var path = document.createElementNS("http://www.w3.org/2000/svg", 'path'); //Create a path in SVG's namespace
       path.setAttributeNS(null, 'class', 'connector');
       path.setAttributeNS(null, "d",'M0 0 C 0 0 0 0 0 0');
-      svg.appendChild(path);
+      connectorsG.appendChild(path);
       connection.path = path;
       store.push(connection);
       redraw(connection);
@@ -205,7 +209,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
 
     var clear = function (path) {
 
-      $('.connector', svg).remove();
+      $(connectorsG).empty();
       store = [];
 
     };
@@ -254,7 +258,7 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     };
 
 
-  }(svg));
+  }(svg, connectorsG));
 
   var updateRotationLength = function () {
 
