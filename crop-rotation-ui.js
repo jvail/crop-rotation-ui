@@ -142,6 +142,8 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         , offsetTo = connection.to.ui.offset()
         , ptFrom  = svg.createSVGPoint()
         , ptTo  = svg.createSVGPoint()
+        , item0 = path.pathSegList.getItem(0)
+        , item1 = path.pathSegList.getItem(1)
         ;
 
       ptFrom.x = offsetFrom.left + connection.from.ui.width();
@@ -152,13 +154,13 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       ptTo.y = offsetTo.top + connection.to.ui.height() * 0.5;
       ptTo = ptTo.matrixTransform(svg.getScreenCTM().inverse());
 
-      path.pathSegList[0].x = ptFrom.x;
-      path.pathSegList[0].y = ptFrom.y;
-      path.pathSegList[1].x = ptTo.x;
-      path.pathSegList[1].y = ptTo.y;
-      path.pathSegList[1].x1 = path.pathSegList[1].x2 = ptFrom.x + (ptTo.x - ptFrom.x) * 0.5;      
-      path.pathSegList[1].y1 = ptFrom.y;
-      path.pathSegList[1].y2 = ptTo.y;
+      item0.x = ptFrom.x;
+      item0.y = ptFrom.y;
+      item1.x = ptTo.x;
+      item1.y = ptTo.y;
+      item1.x1 = item1.x2 = ptFrom.x + (ptTo.x - ptFrom.x) * 0.5;      
+      item1.y1 = ptFrom.y;
+      item1.y2 = ptTo.y;
     
     };
 
@@ -839,10 +841,12 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
       }, // stop
       drag: function (event, ui) {
 
-        var offsetFrom = $(this).offset();
-        var offsetTo = ui.offset;
-        var ptFrom  = svg.createSVGPoint();
-        var ptTo  = svg.createSVGPoint();
+        var offsetFrom = $(this).offset()
+          , offsetTo = ui.offset
+          , ptFrom  = svg.createSVGPoint()
+          , ptTo  = svg.createSVGPoint()
+          , item0 = previewConnection.pathSegList.getItem(0)
+          , item1 = previewConnection.pathSegList.getItem(1)
 
         ptFrom.x = offsetFrom.left + $(this).width() * 0.5;
         ptFrom.y = offsetFrom.top + $(this).height() * 0.5;
@@ -852,13 +856,13 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
         ptTo.y = offsetTo.top + ui.helper.height() * 0.5;
         ptTo = ptTo.matrixTransform(svg.getScreenCTM().inverse());
 
-        previewConnection.pathSegList[0].x = ptFrom.x;
-        previewConnection.pathSegList[0].y = ptFrom.y;
-        previewConnection.pathSegList[1].x = ptTo.x;
-        previewConnection.pathSegList[1].y = ptTo.y;
-        previewConnection.pathSegList[1].x1 = previewConnection.pathSegList[1].x2 = ptFrom.x + (ptTo.x - ptFrom.x) * 0.5;      
-        previewConnection.pathSegList[1].y1 = ptFrom.y;
-        previewConnection.pathSegList[1].y2 = ptTo.y;
+        item0.x = ptFrom.x;
+        item0.y = ptFrom.y;
+        item1.x = ptTo.x;
+        item1.y = ptTo.y;
+        item1.x1 = item1.x2 = ptFrom.x + (ptTo.x - ptFrom.x) * 0.5;      
+        item1.y1 = ptFrom.y;
+        item1.y2 = ptTo.y;
 
       } // drag
     }); // draggable
