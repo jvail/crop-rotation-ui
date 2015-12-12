@@ -1240,9 +1240,9 @@ var CropRotationUi = function (divSelector, options, onCropActivated) {
     var valid = true;
 
     $('.crop-container').first().children('.item').each(function () {
-      if ($(this).data('data').crop.area !== $(this).data('data').clone.data('data').crop.area)
+      if (Math.abs($(this).data('data').crop.area - $(this).data('data').clone.data('data').crop.area) > 0.01)
         valid = false
-    });  
+    });
 
     return valid;
 
