@@ -7,6 +7,7 @@
 <link rel='stylesheet' href='crop-rotation-ui.css' type='text/css'>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script src="lib/pathseg.js"></script> <!-- polyfill - SVGPathSeg is deprecated -->
 <script src='crop-rotation-ui.js'></script>
 <script type='text/javascript'>
 
@@ -197,7 +198,8 @@ var cropRotationUi = new CropRotationUi('#crop-rotation', {
         },
         "id": 1427186728919,
         "to": [
-          1427186662489
+          1427186662489,
+          1427186728920
         ]
       }
     ],
@@ -210,9 +212,33 @@ var cropRotationUi = new CropRotationUi('#crop-rotation', {
         "to": [
           1427186614808
         ]
+      },
+      {
+        "crop": {
+          "name": "pea"
+        },
+        "id": 1427186728920,
+        "to": [
+          1427186614808
+        ]
       }
     ]
   ]);
+
+  $('button').click(function () {
+    if (cropRotationUi.rotationIsValid()) {
+      $('#splitted > pre').empty().append(
+        cropRotationUi.splitted().reduce(function (a, b) {
+          a.push(b.map(function (c) {
+            return c.crop.name;
+          }).join('\t->\t'));
+          return a;
+        }, []).join('\n')
+      );      
+    } else {
+      $('#splitted > pre').empty().append('Rotation invalid.');
+    }
+  });
 
 });
 
@@ -225,7 +251,7 @@ body {
   font-size: 14px;
 }
 
-#crop-rotation {
+#crop-rotation, #splitted {
   width: 70%;
   height: 600px;
   margin-left: auto;
@@ -233,9 +259,32 @@ body {
   margin-top: auto;
 }
 
+button {
+  width: 100px;
+  height: 30px;
+  margin-top: 15px;
+  border-radius: 3px;
+}
+
+#splitted > pre {
+  width: 100%;
+  height: 200px;
+  background-color: rgb(245, 245, 245);
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: #ccc;
+  color: #333;
+  padding: 5px;
+  font-family: monospace;
+}
+
 </style>
 </head>
   <body>
     <div id='crop-rotation'></div>
+    <div id='splitted'>
+      <button>split</button>
+      <pre></pre>
+    </div>
   </body>
 </html>
